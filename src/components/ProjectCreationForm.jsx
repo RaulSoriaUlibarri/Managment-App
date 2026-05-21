@@ -1,4 +1,27 @@
-const CreateProjectForm = ({ handleSave, handleCancel }) => {
+import { useState } from "react";
+
+const ProjectCreationForm = ({ handleSave, handleCancel, closeEditView }) => {
+  const [projectInfo, setProjectInfo] = useState({
+    name: "",
+    description: "",
+    duedate: "",
+  });
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setProjectInfo((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    handleSave(projectInfo);
+    setProjectInfo({ name: "", description: "", duedate: "" });
+    closeEditView();
+  }
+
   return (
     <div>
       <form className="mt-4 text-left">
@@ -10,17 +33,20 @@ const CreateProjectForm = ({ handleSave, handleCancel }) => {
             Cancel
           </button>
           <button
-            onClick={handleSave}
+            onClick={handleSubmit}
             className="px-6 py-2 rounded-md bg-stone-800 text-stone-50 hover:bg-stone-950"
           >
             Save
           </button>
         </menu>
         <label className="text-sm font-bold uppercase text-stone-500">
-          title
+          name
         </label>
         <input
           type="text"
+          name="name"
+          value={projectInfo.name}
+          onChange={handleChange}
           className="w-full p-1 border-b-2 rounded-sm border-stone-300 bg-stone-200 text-stone-600 focus:outline-none focus:border-stone-600"
         />
         <label className="text-sm font-bold uppercase text-stone-500">
@@ -28,6 +54,9 @@ const CreateProjectForm = ({ handleSave, handleCancel }) => {
         </label>
         <input
           type="text"
+          name="description"
+          value={projectInfo.description}
+          onChange={handleChange}
           className="w-full p-1 border-b-2 rounded-sm border-stone-300 bg-stone-200 text-stone-600 focus:outline-none focus:border-stone-600"
         />
         <label className="text-sm font-bold uppercase text-stone-500">
@@ -35,6 +64,9 @@ const CreateProjectForm = ({ handleSave, handleCancel }) => {
         </label>
         <input
           type="date"
+          name="duedate"
+          value={projectInfo.duedate}
+          onChange={handleChange}
           className="w-full p-1 border-b-2 rounded-sm border-stone-300 bg-stone-200 text-stone-600 focus:outline-none focus:border-stone-600"
         />
       </form>
@@ -42,4 +74,4 @@ const CreateProjectForm = ({ handleSave, handleCancel }) => {
   );
 };
 
-export default CreateProjectForm;
+export default ProjectCreationForm;
